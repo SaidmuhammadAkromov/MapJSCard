@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <style>
+        .father{
+            width: 18vw;
+            height: 51vh;
+            background-color: white;
+            margin-left: 3em;
+            margin-top: 1em;
+           
+        }
+        .img-class{
+            width:100%;
+            cursor: pointer;
+        }
+        .texts{
+            font-size: 12.8px;
+            color: #406367;
+        }
+        .enonse:hover{
+            background-color: rgb(9, 37, 9);
+            cursor: pointer;
+            color: white;
+        }
+        .heart:hover{
+            color: grey;
+            cursor: pointer;
+            
+        }
+        .spanElement_class{
+            position: relative;
+            bottom: 2em;
+            right: 12em;
+            font-size: 2em;
+            font-weight: 900;
+        }
+        .my-icon{
+            font-size:2.6em;
+            position: relative;
+            right: 2em;
+            bottom: 2.3em;
+            
+        }
+        .style-new-img{
+            border: black dotted 0.3px;
+            width: 25vw;
+            margin-left: 1em;
+            margin-right: 1em;
+        }
+        .style-new-img:hover{
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            cursor: zoom-in;
+        }
+        .numberspan{
+            position: relative;
+            top: -2.3em;
+            right: 13.5em;
+            font-size: 27px;
+            font-family: 800;
+
+
+        }
+        .addresSpan{
+            position: relative;
+            right: 51em;
+            bottom: -6em;
+        }
+        .addresImg{
+            border: rgb(216, 213, 213) 1px double;
+            position: relative;
+            left: 16em;
+            top: -10em;
+            cursor: pointer;
+            width: 10em;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            
+        }
+        
+        .numberspan:hover{
+            background-color: rgb(9, 51, 9);
+            color: white;
+            cursor: pointer;
+            
+        }
+        .cost{
+            font-size: 1.7em;
+            position: relative;
+            top: 6.8em;
+            left: -14.1em;
+            margin-left: 1em;
+
+        }
+    </style>
+</head>
+<body style="background-color: ghostwhite;">
+    <div class="form">
+        
+        <div id="targetImg1">
+            <img id="targetImg" src="" alt="">
+        </div>
+
+        <div>
+            <label for="file">Image</label>
+            <input id="file" type="file" onchange="fileSelected(event)">
+        </div>
+        <div>
+            <label for="">title</label>
+            <input type="text" placeholder="title" >
+        </div>
+
+        <div>
+            <label for="address">address</label>
+            <input type="text" placeholder="address" >
+        </div>
+
+        <div>
+            <label for="">date</label>
+            <input type="text" placeholder="date" >
+        </div>
+
+        <div>
+            <label for="">price</label>
+            <input type="text" placeholder="price">
+
+        </div>
+    </div>
+    
+    <div id="essential" style="display: flex; flex-wrap: wrap;">
+    </div>
+
+    <button onclick="handle()" type="button" class="btn btn-secondary mt-3">Further...</button>
+    <button onclick="remove()">REMOTE</button>
+    
+    <script>
+        var targetItemId = null
+
+        function fileReaderLoad(e) {
+            var image = document.getElementById('targetImg')
+            image.src = e.currentTarget.result
+        }
+
+        function fileSelected(e) {
+            var input = document.getElementById('file')
+            var file = input.files[0];
+
+            var reader = new FileReader()
+
+            reader.readAsDataURL(file);
+
+            reader.onload = fileReaderLoad
+        }
+
+        function remove(id) {
+            var target = document.getElementById(id)
+            target.remove()
+        }
+
+        function getElementId(e) {
+            var parent = e.srcElement.parentElement
+            var grandParent = parent.parentElement
+
+            var targetID = grandParent.id
+
+            return targetID
+        }
+
+        function handleIConClick(e) {
+            var targetId = getElementId(e)
+            
+            remove(targetId)
+        }
+
+        function handleEdit(e) {
+            var targetID = getElementId(e)
+            getItemValue(targetID)
+        }
+
+        function getItemValue(id) {
+            var item = document.getElementById(id)
+            var itemImage = item.firstElementChild.firstElementChild
+
+            var itemTitle = item.children[1].innerText
+
+            var itemAddress = item.children[2].children[0].innerText
+            var itemDate = item.children[2].children[1].innerText
+
+            var itemPice = item.lastElementChild.firstElementChild.innerText
+
+            var payload = {
+                itemId: id,
+                imageSrc: itemImage.src,
+                title: itemTitle,
+                address: itemAddress,
+                date: itemDate,
+                price: itemPice
+            }
+
+            setFormData(payload)
+        }
+
+        function setFormData(item) {
+            var targetImage = document.getElementById('targetImg')
+            targetImage.src = item.imageSrc
+
+            var inputs = document.querySelectorAll('.form input')
+
+            targetItemId = item.itemId
+
+            inputs[1].value = item.title
+            inputs[2].value = item.address
+            inputs[3].value = item.date
+            inputs[4].value = item.price
+        }
+
+        var targetId = 0
+
+        function writeToLS(item) {
+            var items = []
+
+            var result = localStorage.getItem('items')
+
+            if (!result) {
+                result = []
+            } else {
+                items = JSON.parse(result)
+            }
+
+            items.push(item)
+            localStorage.setItem('items', JSON.stringify(items))
+        } 
+
+        function readFromLS() {
+            var result = localStorage.getItem('items')
+
+            if (!result) {
+                result = []
+            } else {
+                result = JSON.parse(result)
+            }
+
+            return result;
+        }
+
+        function initialITEMS() {
+            var items = readFromLS();
+
+            
+            for (let index = 0; index < items.length; index++) {
+                const element = items[index];
+                add(element.title, element.location, element.date, element.price, element.img);
+                
+            }
+        }
+
+        function add(title, location, date, price, img) {
+            var divContainer = document.createElement('div')
+            divContainer.classList.add('father', 'ps-3', 'pe-3', 'pt-2', 'pb-3')
+            divContainer.id = 'target' + targetId
+
+            var div = document.createElement('div')
+            var divImg = document.createElement('img');
+
+            divImg.classList.add("img-class", "mb-2")
+            divImg.alt = 'Мебель для гостиной!'
+            divImg.src = img
+
+            div.append(divImg)
+
+            var strongElement = document.createElement('strong')
+            strongElement.classList.add('enonse')
+            strongElement.innerText = title
+            
+            var extraDiv = document.createElement('div')
+            var span1 = document.createElement('span')
+            var span2 = document.createElement('span')
+
+            span1.innerText = location
+            span2.innerText = ' ' + date
+
+            extraDiv.classList.add("texts", 'mt-4')
+            extraDiv.append(span1, span2)
+            
+            var bottomDiv = document.createElement('div')
+            var priceElement = document.createElement('strong')
+            var likeIconElement = document.createElement('i')
+
+            bottomDiv.classList.add("d-flex", "justify-content-between")
+            
+            priceElement.classList.add("mt-2")
+            priceElement.innerText = price
+
+            likeIconElement.classList.add('ri-heart-line', 'fs-3', 'heart')
+            // likeIconElement.onclick = handleIConClick
+            likeIconElement.onclick = handleEdit
+
+            bottomDiv.append(priceElement, likeIconElement)
+
+            divContainer.append(div, strongElement, extraDiv, bottomDiv)
+
+            var targetContainer = document.getElementById('essential')
+            targetContainer.append(divContainer)
+
+            targetId += 2
+            
+            reset();
+        }
+
+        function reset() {
+            var inputs = document.querySelectorAll('.form input')
+
+            for (let index = 0; index < inputs.length; index++) {
+                const element = inputs[index];
+                element.value = ''
+            }
+
+            var image = document.getElementById('targetImg')
+            image.src = ''
+
+            targetItemId = null
+        }
+
+        function editItem(payload) {
+            var targetItem = document.getElementById(targetItemId)
+            console.log(targetItem)
+
+            targetItem.firstElementChild.firstElementChild.src = payload.imageSrc
+            targetItem.children[1].innerText = payload.title
+
+            targetItem.children[2].children[0].innerText = payload.location                
+            targetItem.children[2].children[1].innerText = payload.date
+
+            targetItem.lastElementChild.firstElementChild.innerText = payload.price
+
+            reset()
+        }
+
+        function handle() {
+            var inputs = document.querySelectorAll('.form input')
+            
+            var image = document.getElementById('targetImg')
+            
+            var title = inputs[1].value
+            var location = inputs[2].value
+            var date = inputs[3].value
+            var price = inputs[4].value
+
+            if (targetItemId) { // edit
+                var itemPayload = {
+                    imageSrc: image.src,
+                    title: title, 
+                    location: location,
+                    date: date,
+                    price: price
+                }
+                editItem(itemPayload)
+
+            } else { // add
+                 // console.log(image.src)
+                 console.log(image)
+                var localITem = {
+                    title,
+                    location: location,
+                    date: date,
+                    price: price,
+                    img: image.src
+                }
+
+                writeToLS(localITem);
+
+                add(title, location, date, price, image.src)
+            }
+
+        }
+
+        initialITEMS()
+        // add('salom', 'Samarqand', '2816', 951);
+    </script>
+
+</body>
+</html>

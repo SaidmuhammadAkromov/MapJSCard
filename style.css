@@ -1,0 +1,19 @@
+.card{
+    width: 18rem;
+}
+#container{
+    display: flex;
+}
+.card-img-top{
+    width: 60%;
+    margin: 57px;
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+.card-title{
+    padding-left: 20px;
+    padding-top: 20px;
+}
+#mymap{
+    height: 100px;
+}
